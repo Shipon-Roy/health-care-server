@@ -1,4 +1,5 @@
 import express, { Application, Request, Response } from "express";
+import { prisma } from "./app/lib/prisma";
 
 const app: Application = express();
 
@@ -9,8 +10,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Basic route
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello, Ami Health Care Server");
+app.get("/", async (req: Request, res: Response) => {
+  const specialty = await prisma.specialty.create({
+    data: {
+      title: "Cardiology",
+    },
+  });
+  res.status(201).json({
+    success: true,
+    message: "APi is working",
+    data: specialty,
+  });
 });
 
 export default app;

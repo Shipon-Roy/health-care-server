@@ -9,7 +9,7 @@ const createSpecialty = catchAsync(async (req: Request, res: Response) => {
   const specialty = await SpecialtyService.createSpecialty(payload);
 
   sendResponse(res, {
-    statusCode: 201,
+    httpStatusCode: 201,
     success: true,
     message: "Specialty Create successfully!",
     data: specialty,
@@ -20,7 +20,7 @@ const getAllSpecialty = catchAsync(async (req: Request, res: Response) => {
   const specialty = await SpecialtyService.getAllSpecialty();
 
   sendResponse(res, {
-    statusCode: 201,
+    httpStatusCode: 201,
     success: true,
     message: "Specialty fetched successfully!",
     data: specialty,
@@ -32,7 +32,7 @@ const deleteSpecialty = catchAsync(async (req: Request, res: Response) => {
   const specialty = await SpecialtyService.deleteSpecialty(id as string);
 
   sendResponse(res, {
-    statusCode: 201,
+    httpStatusCode: 201,
     success: true,
     message: "Specialty Delete successfully!",
     data: specialty,

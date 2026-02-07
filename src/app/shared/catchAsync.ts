@@ -8,7 +8,7 @@ export const catchAsync = (fn: RequestHandler) => {
     } catch (err: any) {
       console.log(err);
       res.status(500).json({
-        success: true,
+        success: false,
         message: "404 Not Found!",
         error: err.message,
       });

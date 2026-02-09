@@ -26,22 +26,32 @@ const registerPatient = async (payload: IRegisterPatientPayload) => {
     throw new Error("Failed to register patient!");
   }
 
-  // TODO: create patient profile in tranaction after sign up of patient in user modal
-  const patient = await prisma.$transaction(async (tx) => {
-    const patientTx = await tx.patient.create({
-      data: {
-        userId: data.user.id,
-        name: payload.name,
-        email: payload.email,
+  try {
+    // TODO: create patient profile in tranaction after sign up of patient in user modal
+    const patient = await prisma.$transaction(async (tx) => {
+      const patientTx = await tx.patient.create({
+        data: {
+          userId: data.user.id,
+          name: payload.name,
+          email: payload.email,
+        },
+      });
+      return patientTx;
+    });
+
+    return {
+      ...data,
+      patient,
+    };
+  } catch (err) {
+    console.error("Transaction error : ", err);
+    await prisma.user.delete({
+      where: {
+        id: data.user.id,
       },
     });
-    return patientTx;
-  });
-
-  return {
-    ...data,
-    patient,
-  };
+    throw err;
+  }
 };
 
 interface ILoginUserPayload {
